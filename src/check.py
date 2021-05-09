@@ -1,0 +1,97 @@
+import requests
+from pprint import pprint
+from datetime import date
+import simpleaudio as sa
+import time
+from tqdm import trange
+
+good_proxies = []
+bad_proxies = set()
+
+DISTRICT_ID = 97
+USE_PROXY = False
+
+
+def play_alarm(count: int):
+    sound_file = 'assets/alarm.wav'
+    for _ in range(count):
+        sa.WaveObject.from_wave_file(sound_file).play().wait_done()
+
+
+def sleep_with_progress(seconds: int):
+    for _ in trange(seconds):
+        time.sleep(1)
+
+
+def get_proxy():
+    proxy = requests.get(
+        "http://pubproxy.com/api/proxy?format=txt&https=true&country=IN").text
+    print(proxy)
+    # proxy = "45.33.45.209:8118"
+    return (
+        {
+            "https": "http://" + proxy,
+            "http": "http://" + proxy,
+        },
+        proxy
+    )
+
+
+def check():
+
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:88.0) Gecko/20100101 Firefox/88.0',
+        'Accept': 'application/json, text/plain, */*',
+        'Accept-Language': 'en-US,en;q=0.5',
+        'Origin': 'https://www.cowin.gov.in',
+        'Connection': 'keep-alive',
+        'Referer': 'https://www.cowin.gov.in/',
+        'TE': 'Trailers',
+        'If-None-Match': 'W/"29da8-hpVXpOen2PnjOlRfXqrEVF7FjX4"',
+    }
+
+    params = (
+        ('district_id', DISTRICT_ID),
+        ('date', date.today().strftime("%d-%m-%Y")),
+    )
+    if USE_PROXY:
+        proxy, proxy_str = get_proxy()
+        while proxy_str in bad_proxies:
+            time.sleep(5)
+            proxy = get_proxy()
+    try:
+        response = requests.get(
+            'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict',
+            headers=headers,
+            params=params,
+            proxies=proxy if USE_PROXY else None
+        )
+        if USE_PROXY:
+            good_proxies.append(proxy)
+    except Exception:
+        if USE_PROXY:
+            bad_proxies.add(proxy_str)
+        print("ERROR")
+        return
+
+    found = False
+    for center in response.json()["centers"]:
+        for session in center["sessions"]:
+            if session["min_age_limit"] < 45 and session["available_capacity"] > 0:
+                found = True
+                print(center["name"] + "," + str(center["pincode"]), "has",
+                      session["available_capacity"], "vaccine slots for", session["vaccine"])
+
+    if USE_PROXY:
+        print(good_proxies)
+    if not found:
+        print("Could not find any slots.")
+    else:
+        play_alarm(5)
+    return response
+
+
+if __name__ == "__main__":
+    while True:
+        check()
+        sleep_with_progress(60)
