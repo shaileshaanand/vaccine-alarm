@@ -1,0 +1,13 @@
+autopep8==1.5.7
+certifi==2020.12.5
+chardet==4.0.0
+click==7.1.2
+flake8==3.9.2
+idna==2.10
+mccabe==0.6.1
+pycodestyle==2.7.0
+pyflakes==2.3.1
+requests==2.25.1
+simpleaudio==1.0.4
+toml==0.10.2
+urllib3==1.26.4
