@@ -3,7 +3,6 @@ from pprint import pprint
 from datetime import date
 import simpleaudio as sa
 import time
-from tqdm import trange
 
 good_proxies = []
 bad_proxies = set()
@@ -19,8 +18,10 @@ def play_alarm(count: int):
 
 
 def sleep_with_progress(seconds: int):
-    for _ in trange(seconds):
+    for _ in range(seconds):
+        print(".", flush=True, end="")
         time.sleep(1)
+    print()
 
 
 def get_proxy():
@@ -66,13 +67,8 @@ def check():
             params=params,
             proxies=proxy if USE_PROXY else None
         )
-        if USE_PROXY:
-            good_proxies.append(proxy)
     except Exception:
-        if USE_PROXY:
-            bad_proxies.add(proxy_str)
         print("ERROR")
-        return
 
     found = False
     for center in response.json()["centers"]:

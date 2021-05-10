@@ -7,7 +7,7 @@ name = "pypi"
 urllib3 = "*"
 requests = "*"
 simpleaudio = "*"
-tqdm = "*"
+click = "*"
 
 [dev-packages]
 flake8 = "*"
