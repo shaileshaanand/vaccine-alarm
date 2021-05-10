@@ -18,7 +18,9 @@ Usage: check.py [OPTIONS]
   sounds a loud alarm when a slot ia available.
 
 Options:
-  -id, --district-id INTEGER  District ID from Cowin API  [required]
+  -id, --district-id INTEGER  District ID from Cowin API, Get your district ID
+                              at http://bit.ly/districtid  [required]
+
   -d, --delay INTEGER         Delay between each request (in seconds).
                               Default: 60 sec
 
