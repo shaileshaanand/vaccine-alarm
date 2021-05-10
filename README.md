@@ -1,6 +1,6 @@
 # Vaccine Alarm
 
-Check for Vaccine availablity in a district at specified intervals and sounds a loud alarm when a slot ia available.
+Check for Vaccine availability in a district at specified intervals and sounds a loud alarm when a slot ia available.
 
 ## Usage
 
@@ -31,6 +31,12 @@ Options:
 
 ```bash
 pipenv install
+```
+
+or
+
+```bash
+pip install -r requirements.txt
 ```
 
 ### Run checker
