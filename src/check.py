@@ -4,11 +4,8 @@ from datetime import date
 import simpleaudio as sa
 import time
 
-good_proxies = []
-bad_proxies = set()
 
 DISTRICT_ID = 97
-USE_PROXY = False
 
 
 def play_alarm(count: int):
@@ -22,20 +19,6 @@ def sleep_with_progress(seconds: int):
         print(".", flush=True, end="")
         time.sleep(1)
     print()
-
-
-def get_proxy():
-    proxy = requests.get(
-        "http://pubproxy.com/api/proxy?format=txt&https=true&country=IN").text
-    print(proxy)
-    # proxy = "45.33.45.209:8118"
-    return (
-        {
-            "https": "http://" + proxy,
-            "http": "http://" + proxy,
-        },
-        proxy
-    )
 
 
 def check():
@@ -55,17 +38,11 @@ def check():
         ('district_id', DISTRICT_ID),
         ('date', date.today().strftime("%d-%m-%Y")),
     )
-    if USE_PROXY:
-        proxy, proxy_str = get_proxy()
-        while proxy_str in bad_proxies:
-            time.sleep(5)
-            proxy = get_proxy()
     try:
         response = requests.get(
             'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict',
             headers=headers,
             params=params,
-            proxies=proxy if USE_PROXY else None
         )
     except Exception:
         print("ERROR")
@@ -78,8 +55,6 @@ def check():
                 print(center["name"] + "," + str(center["pincode"]), "has",
                       session["available_capacity"], "vaccine slots for", session["vaccine"])
 
-    if USE_PROXY:
-        print(good_proxies)
     if not found:
         print("Could not find any slots.")
     else:
