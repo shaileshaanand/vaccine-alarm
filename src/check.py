@@ -60,14 +60,38 @@ def check(district_id, age_limit, pincode_blacklist, min_seats):
     return response
 
 
-@click.command()
-@click.option("--district-id", "-id", prompt="District id", required=True, type=int)
-@click.option("--delay", "-d", default=60)
-@click.option("--age-limit", "-l", default=18)
-@click.option("--blacklist", "-b", multiple=True, type=int)
-@click.option("--min-seats", "-s", default=1)
+@click.command("check.py",
+               context_settings={
+                   "help_option_names": ['-h', '--help']
+               })
+@click.option("--district-id",
+              "-id",
+              prompt="District id",
+              required=True,
+              help="District ID from Cowin API",
+              type=int)
+@click.option("--delay",
+              "-d",
+              help="Delay between each request (in seconds). Default: 60 sec",
+              default=60)
+@click.option("--age-limit",
+              "-l",
+              help="Minimum age limit, Eg. 18 will trigger only for above 18. Default: 18",
+              default=18)
+@click.option("--blacklist",
+              "-b",
+              multiple=True,
+              help="Pincodes to exclude in your district, will not trigger for these pincodes.",
+              type=int)
+@click.option("--min-seats",
+              "-s",
+              help="Minimum number of seats to ensure for trigger. Default: 1",
+              default=1)
 def main(district_id, delay, age_limit, blacklist, min_seats):
-    """Checks for Vaccine availablity in a district at specified intervals"""
+    """
+    Checks for Vaccine availablity in a district at specified intervals
+    and sounds a loud alarm when a slot ia available.
+    """
 
     while True:
         check(district_id, age_limit, blacklist, min_seats)
