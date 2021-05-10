@@ -9,7 +9,7 @@ Check for Vaccine availability in a district at specified intervals and sounds a
 
 ## Usage
 
-Get your district code [here](DISTRICT_CODES.md)
+Get your district ID [here](DISTRICT_CODES.md)
 
 ```
 Usage: check.py [OPTIONS]
