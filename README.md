@@ -4,16 +4,26 @@ Sounds an alarm if vaccine is available in your district.
 
 ## Usage
 
-Change `DISTRICT_ID` in `src/check.py` to your district id.
+```
+check.py [OPTIONS]
+
+Options:
+-id, --district-id INTEGER [required]
+-d, --delay INTEGER
+-l, --age-limit INTEGER
+-b, --blacklist INTEGER
+-s, --min-seats INTEGER
+--help Show this message and exit.
+```
 
 ### Install Dependencies
 
-"""bash
+```bash
 pipenv install
-"""
+```
 
 ### Run checker
-"""
-"""bash
+
+```bash
 python src/check.py
-"""
+```
