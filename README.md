@@ -2,6 +2,11 @@
 
 Check for Vaccine availability in a district at specified intervals and sounds a loud alarm when a slot ia available.
 
+-   [Vaccine Alarm](#vaccine-alarm)
+    -   [Usage](#usage)
+        -   [Install Dependencies](#install-dependencies)
+        -   [Run checker](#run-checker)
+
 ## Usage
 
 Get your district code [here](DISTRICT_CODES.md)
