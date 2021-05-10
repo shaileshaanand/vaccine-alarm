@@ -68,7 +68,7 @@ def check(district_id, age_limit, pincode_blacklist, min_seats):
               "-id",
               prompt="District id",
               required=True,
-              help="District ID from Cowin API",
+              help="District ID from Cowin API, Get your district ID at http://bit.ly/districtid",
               type=int)
 @click.option("--delay",
               "-d",
