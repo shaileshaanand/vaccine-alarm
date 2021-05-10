@@ -3,9 +3,7 @@ from pprint import pprint
 from datetime import date
 import simpleaudio as sa
 import time
-
-
-DISTRICT_ID = 97
+import click
 
 
 def play_alarm(count: int):
@@ -21,8 +19,8 @@ def sleep_with_progress(seconds: int):
     print()
 
 
-def check():
-
+def check(district_id, age_limit, pincode_blacklist, min_seats):
+    pincode_blacklist = set(pincode_blacklist)
     headers = {
         'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:88.0) Gecko/20100101 Firefox/88.0',
         'Accept': 'application/json, text/plain, */*',
@@ -35,7 +33,7 @@ def check():
     }
 
     params = (
-        ('district_id', DISTRICT_ID),
+        ('district_id', district_id),
         ('date', date.today().strftime("%d-%m-%Y")),
     )
     try:
@@ -50,7 +48,7 @@ def check():
     found = False
     for center in response.json()["centers"]:
         for session in center["sessions"]:
-            if session["min_age_limit"] < 45 and session["available_capacity"] > 0:
+            if session["min_age_limit"] <= age_limit and session["available_capacity"] >= min_seats and center["pincode"] not in pincode_blacklist:
                 found = True
                 print(center["name"] + "," + str(center["pincode"]), "has",
                       session["available_capacity"], "vaccine slots for", session["vaccine"])
@@ -62,7 +60,20 @@ def check():
     return response
 
 
-if __name__ == "__main__":
+@click.command()
+@click.option("--district-id", "-id", prompt="District id", required=True, type=int)
+@click.option("--delay", "-d", default=60)
+@click.option("--age-limit", "-l", default=18)
+@click.option("--blacklist", "-b", multiple=True, type=int)
+@click.option("--min-seats", "-s", default=1)
+def main(district_id, delay, age_limit, blacklist, min_seats):
+    """Checks for Vaccine availablity in a district at specified intervals"""
+
     while True:
-        check()
-        sleep_with_progress(60)
+        check(district_id, age_limit, blacklist, min_seats)
+        print(f"Sleeping for {delay} seconds")
+        sleep_with_progress(delay)
+
+
+if __name__ == "__main__":
+    main()
