@@ -1,16 +1,22 @@
 import requests
 from pprint import pprint
 from datetime import date
-import simpleaudio as sa
+from playsound import playsound
+# import simpleaudio as sa
 import time
 import click
 
 
 def play_alarm(count: int):
-    sound_file = 'assets/alarm.wav'
+    # sound1 = "../assets/alarm.wav"
+    sound2 = "../assets/alarmVar.wav"
+    # sound3 = "../assets/beep1.mpeg"
+    # sound4 = "../assets/beep2.mpeg"    
     for _ in range(count):
-        sa.WaveObject.from_wave_file(sound_file).play().wait_done()
+		# sa.WaveObject.from_wave_file(sound2).play().wait_done()
+        playsound(sound2)
 
+# play_alarm(5)
 
 def sleep_with_progress(seconds: int):
     for _ in range(seconds):
