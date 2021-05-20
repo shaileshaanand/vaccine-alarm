@@ -9,6 +9,8 @@ mccabe==0.6.1
 pycodestyle==2.7.0
 pyflakes==2.3.1
 requests==2.25.1
-simpleaudio==1.0.4
+playsound==1.2.2
+# simpleaudio==1.0.4
 toml==0.10.2
 urllib3==1.26.4
+fuzzywuzzy==0.18.0
