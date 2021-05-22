@@ -1,44 +1,31 @@
 import requests
-from pprint import pprint
 from datetime import date
 from playsound import playsound
-# import simpleaudio as sa
 import time
 import click
 
 
 def play_alarm(count: int):
-    # sound1 = "../assets/alarm.wav"
     sound2 = "../assets/alarmVar.wav"
-    # sound3 = "../assets/beep1.mpeg"
-    # sound4 = "../assets/beep2.mpeg"    
     for _ in range(count):
-        # sa.WaveObject.from_wave_file(sound2).play().wait_done()
         playsound(sound2)
 
-# play_alarm(5)
-'''
-def sleep_with_progress(seconds: int):
-    for _ in range(seconds):
-        print(".", flush=True, end="")
-        time.sleep(1)
-    print()
-'''
 
 def sleep_with_progress(seconds: int):
     print(f"Sleeping for {seconds} seconds")
-    print("Elapsed seconds =  ", end = "")
+    print("Elapsed seconds =  ", end="")
     erase = ""
     d = 1
     for i in range(seconds):
-        if not (i)%d:
+        if not (i) % d:
             erase += "\b"
             d *= 10
-        print(erase + str(i+1), end = "", flush =True)
+        print(erase + str(i+1), end="", flush=True)
         time.sleep(1)
     print()
 
-def check(district_id, age_limit = 18, pincode_blacklist = [], min_seats = 1):
+
+def check(district_id, age_limit=18, pincode_blacklist=[], min_seats=1):
     pincode_blacklist = set(pincode_blacklist)
     headers = {
         'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:88.0) Gecko/20100101 Firefox/88.0',
