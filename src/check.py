@@ -1,25 +1,31 @@
 import requests
-from pprint import pprint
 from datetime import date
-import simpleaudio as sa
+from playsound import playsound
 import time
 import click
 
 
 def play_alarm(count: int):
-    sound_file = 'assets/alarm.wav'
+    sound2 = "../assets/alarmVar.wav"
     for _ in range(count):
-        sa.WaveObject.from_wave_file(sound_file).play().wait_done()
+        playsound(sound2)
 
 
 def sleep_with_progress(seconds: int):
-    for _ in range(seconds):
-        print(".", flush=True, end="")
+    print(f"Sleeping for {seconds} seconds")
+    print("Elapsed seconds =  ", end="")
+    erase = ""
+    d = 1
+    for i in range(seconds):
+        if not (i) % d:
+            erase += "\b"
+            d *= 10
+        print(erase + str(i+1), end="", flush=True)
         time.sleep(1)
     print()
 
 
-def check(district_id, age_limit, pincode_blacklist, min_seats):
+def check(district_id, age_limit=18, pincode_blacklist=[], min_seats=1):
     pincode_blacklist = set(pincode_blacklist)
     headers = {
         'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:88.0) Gecko/20100101 Firefox/88.0',
@@ -92,10 +98,8 @@ def main(district_id, delay, age_limit, blacklist, min_seats):
     Checks for Vaccine availablity in a district at specified intervals
     and sounds a loud alarm when a slot ia available.
     """
-
     while True:
         check(district_id, age_limit, blacklist, min_seats)
-        print(f"Sleeping for {delay} seconds")
         sleep_with_progress(delay)
 
 
